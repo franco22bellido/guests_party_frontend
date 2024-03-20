@@ -15,13 +15,14 @@ export const useGuest = () => {
 
 export const GuestProvider = ({ children }) => {
 
-    const [guest, setGuest] = useState(null);
+    const [data, setData] = useState(null);
+    const [loading,  setLoading] = useState(true);
     const { user } = useAuth();
 
     const create = async (data) => {
         try {
             const res = await createGuest(data, user.token);
-            setGuest(res.data);
+            setData(res.data);
         } catch (error) {
             console.log(error);
         }
@@ -29,7 +30,8 @@ export const GuestProvider = ({ children }) => {
     const regenerateTokenGuest = async (guestId) => {
         try {
             const res = await regenerateToken(guestId, user.token);
-            setGuest(res.data);
+            setData(res.data);
+            return setLoading(false);
         } catch (error) {
             console.log(error);
         }
@@ -37,24 +39,25 @@ export const GuestProvider = ({ children }) => {
     const seeInvitationGuest = async (guestToken) => {
         try {
             const res = await seeInvitation(guestToken);
-            setGuest(res.data)
-
+            setData(res.data)
+            setLoading(false);
+            return res.data;
         } catch (error) {
-            
+            return error.response
+            // console.log(error);
         }
     }
-    const cambiarEstado = async (guestToken)=> {
+    const setStateGuest = async (guestToken)=> {
         try {
-            const res = await setState(guestToken, user.token);
-            console.log(res);
+            await setState(guestToken, user.token);
         } catch (error) {
             console.log(error);
         }
     }
+
     const deleteGuest = async (guestId)=> {
         try {
-            const res = await deleteOne(guestId, user.token);
-            console.log(res);
+            await deleteOne(guestId, user.token);
         } catch (error) {
             console.log(error); 
         }
@@ -64,8 +67,8 @@ export const GuestProvider = ({ children }) => {
 
     return (
         <GuestContext.Provider value={{
-            guest, setGuest, create, regenerateTokenGuest, seeInvitationGuest,cambiarEstado,
-            deleteGuest
+            data, setData, create, regenerateTokenGuest, seeInvitationGuest,setStateGuest,
+            deleteGuest, loading, setLoading
         }}>
             {children}
         </GuestContext.Provider>

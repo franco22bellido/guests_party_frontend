@@ -24,13 +24,18 @@ const LoginPage = () => {
 
 
   return (
-    <div>
-        <form onSubmit={onSubmit}>
-        <input type="email"
+    <div className='col-md-6 mx-auto my-5'>
+        <form onSubmit={onSubmit} className="form">
+
+        <label htmlFor="email" className="form-label">Email address</label>
+        <input className='form-control' type="email"
         {...register('email', {required: true})} />
-        <input type="password" 
+
+        <label htmlFor="password" className="form-label">Password</label>
+        <input className='form-control' type="password" 
         {...register('password', {required: true})} />
-        <button type='submit'>Login</button>
+
+        <button className="btn btn-primary" type='submit'>Login</button>
       </form>
       <p>You do not have an account?</p>
       <Link to={'/register'}>Register</Link>

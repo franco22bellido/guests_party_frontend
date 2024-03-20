@@ -23,16 +23,23 @@ const RegisterPage = () => {
 
 
   return (
-    <div>
-      <form onSubmit={onSubmit}>
-        <input type="text" 
+    <div className='col-md-6 mx-auto my-5'>
+      <form onSubmit={onSubmit} className="form">
+
+        <label htmlFor="username" className="form-label">Username</label>
+        <input type="text" className='form-control'
             {...register('username', {required: true})}
         />
-        <input type="email"
+
+        <label htmlFor="email" className="form-label">Email address</label>
+        <input type="email" className='form-control'
         {...register('email', {required: true})} />
-        <input type="password" 
+
+        <label htmlFor="password" className="form-label">Password</label>
+        <input type="password"  className='form-control'
         {...register('password', {required: true})} />
-        <button type='submit'>register</button>
+
+        <button type='submit' className='btn btn-primary'>register</button>
       </form>
       <p>Do you already have an account?</p>
       <Link to={'/login'}>Login</Link>

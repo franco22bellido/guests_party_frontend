@@ -20,6 +20,11 @@ const Event = () => {
         setGuest(res.data.guests)
     }
 
+    const deleteAndGetData = async (guestId)=> {
+        await deleteGuest(guestId);
+        getData(eventId)
+    }
+
     useEffect(() => {
         getData(eventId);
     },[])
@@ -27,21 +32,18 @@ const Event = () => {
     
     return (
         <div>
+            <Link to={`/create-guest/${event.id}`}>create new invitation</Link>
             {
                 guestState.map((guest, i)=> (
                     <div key={i}>
                         <h1>{guest.firstName}</h1>
                         <h1>{guest.lastName}</h1>
                         <Link to={`/re-generate/${guest.id}`}>generate invitation </Link>
-                        <button onClick={async ()=> {await deleteGuest(guest.id); getData(eventId)}}>delete</button>
-                        {/* una vez que se hace el delete no se llama al getData desde aca, lo mejor seria
-                        que el guetContext se encargue de actualizar el estado de la lista,
-                        agregar un state de guestsList*/}
+                        <button onClick={()=> {deleteAndGetData(guest.id)}}>delete</button>
                     </div>
                 ))
             }
 
-            <Link to={`/create-guest/${event.id}`}>generate new invitation</Link>
         </div>
     )
 }

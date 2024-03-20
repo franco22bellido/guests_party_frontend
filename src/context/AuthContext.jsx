@@ -73,7 +73,15 @@ export const AuthProvider = ({children})=> {
         checkLogin();    
     }, [] )
 
- 
+    const logOut = async ()=> {
+        const cookies = Cookies.get();
+        if(cookies.token){
+            Cookies.remove('token');
+            setUser(null);
+            setLoading(false);
+            setIsAuthenticated(false);
+        }
+    }
  
     return ( 
         <AuthContext.Provider value={{
@@ -82,7 +90,8 @@ export const AuthProvider = ({children})=> {
             user,
             isAuthenticated, 
             loading,
-            errors
+            errors,
+            logOut
         }}>
             {children}
         </AuthContext.Provider>

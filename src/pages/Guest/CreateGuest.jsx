@@ -1,38 +1,44 @@
 import React, { useEffect } from 'react'
-import {useForm} from 'react-hook-form'
+import { useForm } from 'react-hook-form'
+import QRCode from 'react-qr-code';
 import { useParams } from 'react-router-dom';
-import Guest from '../../components/Guest.jsx';
-import {useGuest} from '../../context/GuestContext'
+import GuestComponent from '../../components/GuestComponent.jsx';
+import QRCodeComponent from '../../components/QRCodeComponent.jsx';
+import { useGuest } from '../../context/GuestContext'
 
 const CreateGuest = () => {
 
-  const {register, handleSubmit} = useForm();
-  const {eventId} = useParams();
-  const {guest, setGuest,create} = useGuest();
-  
+  const { register, handleSubmit } = useForm();
+  const { eventId } = useParams();
+  const { data, setData, create } = useGuest();
 
-  const onSubmit = handleSubmit(async (data)=> {
-      data.eventId = eventId;
-      await create(data);
+
+  const onSubmit = handleSubmit(async (data) => {
+    data.eventId = eventId;
+    await create(data);
   })
 
-  useEffect(()=> {
-    setGuest(null);
-  }, [] )
+  useEffect(() => {
+    setData(null);
+  }, [])
   return (
     <div>
       <form onSubmit={onSubmit}>
         <input type="text"
-        {...register('firstName', {required: true})}/>
-        <input type="text" 
-        {...register('lastName', {required: true})}/>
+          {...register('firstName', { required: true })} />
+        <input type="text"
+          {...register('lastName', { required: true })} />
         <button type='submit'>craete invitation</button>
       </form>
       {
         //una vez craedo se genera una invitación
-        guest ? 
-        <Guest data={guest}/> :
-        <h1></h1>
+        data ?
+          <div>
+            <GuestComponent guest={data.guest} />
+            <QRCodeComponent token = {data?.token}/>
+          </div>
+          :
+          <h1></h1>
       }
     </div>
   )
