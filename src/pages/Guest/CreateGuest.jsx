@@ -1,7 +1,6 @@
 import React, { useEffect } from 'react'
 import { useForm } from 'react-hook-form'
-import QRCode from 'react-qr-code';
-import { useParams } from 'react-router-dom';
+import { Link, useParams } from 'react-router-dom';
 import GuestComponent from '../../components/GuestComponent.jsx';
 import QRCodeComponent from '../../components/QRCodeComponent.jsx';
 import { useGuest } from '../../context/GuestContext'
@@ -22,20 +21,23 @@ const CreateGuest = () => {
     setData(null);
   }, [])
   return (
-    <div>
-      <form onSubmit={onSubmit}>
-        <input type="text"
+    <div className='container'>
+      <form onSubmit={onSubmit} className="form col-md-6 mx-auto my-4">
+        <label htmlFor="firstName" className="form-label">First name</label>
+        <input type="text" className='form-control'
           {...register('firstName', { required: true })} />
-        <input type="text"
+
+        <label htmlFor="lastName" className="form-label">Last name</label>
+        <input type="text" className='form-control'
           {...register('lastName', { required: true })} />
-        <button type='submit'>craete invitation</button>
+        <button type='submit' className='btn btn-success my-3'>craete invitation</button>
       </form>
       {
-        //una vez craedo se genera una invitación
         data ?
-          <div>
-            <GuestComponent guest={data.guest} />
-            <QRCodeComponent token = {data?.token}/>
+          <div class="card row">
+              <div className='card-img-top mt-3' style={{width: '64rem'}}><QRCodeComponent token={data?.token} /></div>
+                <GuestComponent guest={data.guest} />
+                <Link className='btn btn-primary col-md-2' to={`/event-guests/${data.guest.eventId}`}>Go to guests</Link>
           </div>
           :
           <h1></h1>
@@ -46,3 +48,4 @@ const CreateGuest = () => {
 
 
 export default CreateGuest
+

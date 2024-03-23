@@ -36,6 +36,12 @@ export const deleteOne = async (guestId, userToken)=> {
     });
 }
 
+export const setStateById = async (guestId, userToken)=> {
+    return await axios.put(`${API}/setStateById/${guestId}`, {}, {
+        headers: {Authorization: userToken}
+    })
+}
+
 // opciones crud, findone✔= seeInvitation || regenerateToken.
 //findAll lo hace cuando veo un evento.
 //delete y update

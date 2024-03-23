@@ -31,21 +31,23 @@ const SeeInvitation = () => {
        seeInvitation();
     }, [])
   return (
-    <div>
+    <div className='container'>
       {
         loading === false ?
-        <GuestComponent guest={data.guest}/>
+        <div className='card mt-3'>
+          <GuestComponent guest={data.guest}/>
+          {
+            //este codigo es el que autoriza la entrada
+            user?.data.id === data?.guest.userId ? 
+            <button className='btn btn-success col-md-2 ms-2 mb-2' onClick={()=> markArrival()}>authorize entry</button>
+            : <Link className='btn btn-primary col-md-2 ms-2 mb-2' to={'/login'}>Login</Link>
+          }
+        </div>
         : <h1>loading...</h1>
       
       }
 
       
-      {
-        //este codigo es el que autoriza la entrada
-        user?.data.id === data?.guest.userId ? 
-        <button onClick={()=> markArrival()}>authorize entry</button>
-        : <Link>Login</Link>
-      }
      
       
     </div>

@@ -29,17 +29,16 @@ const Regenerate = () => {
     }, [])
 
     return (
-        <div>
+        <div className='container'>
             {
                 loading === false ?
-                    <div>
-                        <GuestComponent guest={data?.guest}/>
-                        <QRCodeComponent token={data?.token}/>
-                    </div>
-
+                      <div className="card row mt-3">
+                          <div className='card-img-top mt-3' style={{width: '64rem'}}><QRCodeComponent token={data?.token} /></div>
+                            <GuestComponent guest={data.guest} />
+                            <button className='btn btn-success col-md-2' onClick={() => markArrival()}>authorize entry</button>
+                      </div>
                     : <h1>loading...</h1>
-            }
-            <button onClick={() => markArrival()}>authorize entry</button>
+                }
         </div>
     )
 }
