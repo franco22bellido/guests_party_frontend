@@ -23,7 +23,7 @@ const Navbar = () => {
                     <div className="navbar-nav">
                         {/* <Link className="nav-link active" aria-current="page" to="create-event">Create new event</Link> */}
                         <Link className="nav-link" onClick={()=> logOut()}>logout</Link>
-                        {/* <Link className="nav-link" to="#">Pricing</Link> */}
+                        <Link className="nav-link" to="/scanQr">scan Qr</Link>
                         {/* <Link className="nav-link" to={''}>Disabled</Link> */}
                     </div>
                         :

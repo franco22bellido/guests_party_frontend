@@ -1,6 +1,6 @@
 import axios from 'axios'
 
-const API = 'http://localhost:3000'
+const API = 'http://192.168.0.2:3000'
 
 
 export const registerRequest = async (user)=> {

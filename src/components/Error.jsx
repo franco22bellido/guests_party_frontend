@@ -1,10 +1,11 @@
-import React, { useEffect } from 'react'
-import { useState } from 'react';
+import { useEffect  } from 'react'
 import { useAuth } from '../context/AuthContext'
 
 const Error = () => {
 
     const { errors } = useAuth();
+
+
 
     const cargarErrores = async ()=> {
         const timer = setTimeout(()=> {

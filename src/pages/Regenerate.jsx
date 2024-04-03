@@ -14,7 +14,7 @@ const Regenerate = () => {
         await setStateGuest(data.token);
         return regenerateTokenGuest(data.guest.id);
     }
-
+    
     const getDataIfParamExist = async () => {
         if (guestId) {
             await regenerateTokenGuest(guestId);

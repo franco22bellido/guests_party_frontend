@@ -1,94 +1,83 @@
-import React from 'react'
-import { useEffect } from 'react';
+import QrScanner from 'qr-scanner';
+import { useState } from 'react';
+import { useGuest } from '../context/GuestContext';
+import { Link } from 'react-router-dom';
 
 
 const ScanQrComponent = () => {
 
+  const [videoProperties ,setVideoProperties] = useState()
+  const [qrDecoded, setQrDecoded] = useState('')
+  const [validation, setValidation] = useState(false)
+  const {seeInvitationGuest, errorGuests, setErrorGuests} = useGuest()
 
-  
-  let scanning = false;
-  useEffect(() => {
-  
-    // console.log(qrcode);
-    const video = document.createElement("video");
 
-    //nuestro camvas
-    const canvasElement = document.getElementById("qr-canvas");
-    const canvas = canvasElement.getContext("2d");
+  const openCamera = async ()=> {
+    if(navigator.mediaDevices && navigator.mediaDevices.getUserMedia){
+       try {
+          const stream = await navigator.mediaDevices.getUserMedia({
+            video: {facingMode: 'environment'}
+          })
+          videoProperties.srcObject = stream
+          videoProperties.play()
 
-    const btnScanQR = document.getElementById("btn-scan-qr");
-
-    const encenderCamara = async () => {
-      navigator.mediaDevices
-        .getUserMedia({ video: { facingMode: "environment" } })
-        .then(function (stream) {
-          scanning = true;
-          btnScanQR.hidden = true;
-          canvasElement.hidden = false;
-          video.setAttribute("playsinline", true); // required to tell iOS safari we don't want fullscreen
-          video.srcObject = stream;
-          video.play();
-          tick();
-          
-          scan();
-        });
-    };
-    function scan() {
-      try {
-        window.qrcode.decode();
-        
-      } catch (e) {
-        setTimeout(scan, 300);
-      }
+          const qrScanner = new QrScanner(videoProperties, 
+            result => {
+              setQrDecoded(result)
+              return validateInvitation(result)
+            })
+            qrScanner.start()
+       } catch (error) {
+        console.log(error)
+       }
     }
+  }
+  const validateInvitation = async (url)=> {
+    let urlValid = url.includes(`${window.location.origin}/see-invitation/?token=`)
+    if(!urlValid) return setErrorGuests(['the scanned url is not valid'])
+    let tokenFound = url.replace(`${window.location.origin}/see-invitation/?token=`, '')
+    const res = await seeInvitationGuest(tokenFound)
+    if(res){
+       setValidation(true)}
+       else{
+        console.log(errorGuests)
+        setValidation(false)
+       }
+  }
 
-
-    function tick() {
-      canvasElement.height = video.videoHeight;
-      canvasElement.width = video.videoWidth;
-      canvas.drawImage(video, 0, 0, canvasElement.width, canvasElement.height);
-
-      scanning && requestAnimationFrame(tick);
-    }
-
-      
-      window.qrcode.callback = (respuesta) => {
-        if (respuesta) {
-          console.log("escaneo completo");
-          console.log(respuesta);
-          // Swal.fire(respuesta)
-          // activarSonido();
-          //encenderCamara();    
-          // cerrarCamara();    
-    
-        }
-      };
-
-    encenderCamara();
-  }, [])
-
-
+  // validateInvitation('http://localhost:5173/see-invitation/?token=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MTY2LCJpYXQiOjE3MTIxNzc2NDZ9.szisMGGJGxqWxgUsJJYSF6xxXGw2zayeQ4AlhUzB1zc')
 
   return (
+    <section className='container'>
+      {
+        errorGuests.map((err, i)=> (
+            <p key={i} className="alert alert-danger" role="alert">
+              {err}
+            </p>
+        ))
+      }
+      <div className='row'>
+      <div className='card col-md-8 mx-auto'>
+        <video className='card-img-top mx-auto mt-3' id='video' autoPlay ref= {video => {setVideoProperties(video)}}></video>
+        <div className='card-body'>
+          {
+            validation ?
+            <h5 className='card-title'>the token is valid!!</h5>
+            :
+            <h5 className='card-title'>awaiting for token...</h5>
 
-    <div className="row justify-content-center mt-5">
-      <div className="col-sm-4 shadow p-3">
-        <h5 className="text-center">Escanear codigo QR</h5>
-        <div className="row text-center">
-          <a id="btn-scan-qr" href="#" />
-          <img src="https://dab1nmslvvntp.cloudfront.net/wp-content/uploads/2017/07/1499401426qr_icon.svg" className="img-fluid text-center" width="175" />
-          <a />
-          <canvas hidden="" id="qr-canvas" className="img-fluid"></canvas>
-        </div>
-        <div className="row mx-5 my-3">
-          <button className="btn btn-success btn-sm rounded-3 mb-2" >Encender camara</button>
-          {/* <button className="btn btn-danger btn-sm rounded-3" onclick="cerrarCamara()">Detener camara</button> */}
+          }
+          <button onClick={()=> openCamera()}>Open camera</button>
+
+          {
+            validation &&
+            <Link to={qrDecoded} target="_blank" rel="noopener noreferrer">view invitation</Link>
+          }
         </div>
       </div>
-    </div>
-
+      </div>
+    </section>
   )
 }
 
 export default ScanQrComponent
-

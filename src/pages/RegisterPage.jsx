@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react'
+import { useEffect } from 'react'
 import {useForm} from 'react-hook-form'
 import { useAuth } from '../context/AuthContext';
 import { Link, useNavigate } from 'react-router-dom';
@@ -6,7 +6,7 @@ import { Link, useNavigate } from 'react-router-dom';
 const RegisterPage = () => {
 
     const {register, handleSubmit} = useForm();
-    const {signUp, isAuthenticated} = useAuth();
+    const {signUp, isAuthenticated, errorAuth} = useAuth();
     const navigate = useNavigate();
 
     
@@ -24,6 +24,13 @@ const RegisterPage = () => {
 
   return (
     <div className='col-md-6 mx-auto my-5'>
+      {
+        errorAuth && 
+        errorAuth.map((error, i)=> (
+          <p key={i} className="alert alert-secondary" role="alert">{error}</p>
+        ))
+      }
+
       <form onSubmit={onSubmit} className="form">
 
         <label htmlFor="username" className="form-label">Username</label>
