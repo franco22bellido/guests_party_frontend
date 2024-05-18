@@ -14,6 +14,7 @@ import Navbar from './components/Navbar'
 import ScanQrComponent from './components/ScanQrComponent'
 import 'react-toastify/dist/ReactToastify.css';
 import { ToastContainer } from 'react-toastify';
+import AutoLogin from './components/AutoLogin'
 
 function App() {
   
@@ -27,17 +28,17 @@ function App() {
       <Routes>
         <Route path='/login' element={<LoginPage/>}/>
         <Route path='/register' element={<RegisterPage/>}/>
+        <Route path='/test/:usertest' element={<AutoLogin/>}/>
           
         {/* use this endpoint senting the query ?token=aodkaspo */}
         <Route path="/see-invitation/" exact element={<SeeInvitation/>} />
         
        <Route element={<ProtectedRoute/>}>
         <Route path='/scanQr' element={<ScanQrComponent/>}/>
-        <Route path='/home' element={<CreateEvent/>}/>
+        <Route path='/' element={<CreateEvent/>}/>
         <Route path='/event-Guests/:eventId' element={<Event/>}/>
         <Route path='/create-guest/:eventId' element={<CreateGuest/>}/>
         <Route path='/re-generate/:guestId' element={<Regenerate/>}/>
-        
        </Route>
 
       </Routes>

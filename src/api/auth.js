@@ -5,10 +5,8 @@ export const registerRequest = async (user)=> {
     return await axios.post(`/auth/register`, user);
 }
 export const loginRequest = async (user)=> {
-    console.log(user)
     try {
         const res= await axios.post(`/auth/login`, user);
-        console.log(res)
         return res;
     } catch (error) {
         console.log(error)
