@@ -1,23 +1,21 @@
-import axios from "axios";
-
-const API = "http://192.168.0.2:3000/events";
+import axios from "./axios.config";
 
 export const getEvents = async (token)=> {
-    return await axios.get(API, {
+    return await axios.get('/events', {
         headers: {
             Authorization: token
         }
     });
 }
 export const createEvent = async (data, token)=> {
-    return await axios.post(`${API}`,data, {
+    return await axios.post('/events',data, {
         headers: {
             Authorization: token
         }
     });
 }
 export const eventAndGuests = async (eventId, token)=> {
-    return await axios.get(`${API}/EventAndGuests/${eventId}`, {
+    return await axios.get(`/events/EventAndGuests/${eventId}`, {
         headers: {
             Authorization: token
         }
@@ -25,7 +23,7 @@ export const eventAndGuests = async (eventId, token)=> {
 }
 
 export const deleteEventAndGuests = async (eventId, userToken)=> {
-    return await axios.delete(`${API}/${eventId}`, {
+    return await axios.delete(`/events/${eventId}`, {
         headers : {
             Authorization: userToken
         }

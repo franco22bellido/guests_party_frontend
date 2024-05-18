@@ -1,116 +1,117 @@
 import { useContext, useEffect } from "react";
 import { createContext, useState } from "react";
-import {registerRequest, verifyToken} from '../api/auth'
+import { registerRequest, verifyToken } from '../api/auth'
 import { loginRequest } from "../api/auth";
-import Cookies  from 'js-cookie'
+import Cookies from 'js-cookie'
 import { toast } from "react-toastify";
 
 
 export const AuthContext = createContext();
 
-export const useAuth = ()=> {
+export const useAuth = () => {
     const context = useContext(AuthContext);
-    if(!context){
+    if (!context) {
         throw new Error("useAuth must be used withon a AuthProvider");
     }
     return context;
 }
 
-export const AuthProvider = ({children})=> {
+export const AuthProvider = ({ children }) => {
     const [user, setUser] = useState(null);
     const [isAuthenticated, setIsAuthenticated] = useState(false);
     const [loading, setLoading] = useState(true);
-    const [errorAuth, setErrorAuth]  = useState(null);
-    const notify = (message) => toast.success(message, {autoClose: 1500});
+    const [errorAuth, setErrorAuth] = useState(null);
+    const notify = (message) => toast.success(message, { autoClose: 1500 });
 
     const signUp = async (user) => {
         try {
-            const res  = await registerRequest(user);
+            const res = await registerRequest(user);
             notify('Successful registration!!');
             return res;
         } catch (error) {
-            
-            if(Array.isArray(error.response.data.message)){
+
+            if (Array.isArray(error.response.data.message)) {
                 setErrorAuth(error.response.data.message)
-            }else {
+            } else {
                 setErrorAuth([error.response.data.message])
             }
         }
     }
-    const signIn = async (user)=> {
+    const signIn = async (user) => {
         try {
             const res = await loginRequest(user);
             setUser(res.data);
             setIsAuthenticated(true);
-            Cookies.set('token', res.data.token);
             notify('successful login');
             return res;
         } catch (error) {
-            if(Array.isArray(error.response.data.message)){
+            if (Array.isArray(error.response.data.message)) {
                 setErrorAuth(error.response.data.message);
-            }else{
+            } else {
                 setErrorAuth([error.response.data.message]);
             }
         }
     }
 
 
-    useEffect(()=> {
-        if(errorAuth){
-            setTimeout(()=> {
+    useEffect(() => {
+        if (errorAuth) {
+            setTimeout(() => {
                 setErrorAuth(null);
             }, 4000);
         }
     }, [errorAuth])
 
 
-    useEffect(()=> {
-        
-        async function checkLogin (){
+    useEffect(() => {
+
+        async function checkLogin() {
             const cookies = Cookies.get();
-        if(!cookies.token) {
-            setIsAuthenticated(false);
-            setUser(null);
-            setLoading(false);
-        }
+            if (!cookies.token) {
+                setIsAuthenticated(false);
+                setUser(null);
+                setLoading(false);
+            }
             try {
                 //revisar, el token si es invalido igual responde un res.data
                 const res = await verifyToken(cookies.token);
-                if(!res.data){
+                if (!res.data) {
                     setLoading(false);
                     return setIsAuthenticated(false);
                 }
-                
+
                 setLoading(false);
                 setIsAuthenticated(true)
-                setUser({data : res.data, 
-                         token :  cookies.token});
+                setUser({
+                    data: res.data,
+                    token: cookies.token
+                });
             } catch (error) {
                 setLoading(false);
                 setIsAuthenticated(false);
                 setUser(null);
             }
-        
-        }
-        checkLogin();    
-    }, [] )
 
-    const logOut = async ()=> {
+        }
+        checkLogin();
+    }, [])
+
+    const logOut = async () => {
         const cookies = Cookies.get();
-        if(cookies.token){
+        if (cookies.token) {
             Cookies.remove('token');
             setUser(null);
             setLoading(false);
             setIsAuthenticated(false);
         }
     }
- 
-    return ( 
+
+    return (
         <AuthContext.Provider value={{
             signUp,
             signIn,
             user,
-            isAuthenticated, 
+            isAuthenticated,
             loading,
             errorAuth,
             logOut
