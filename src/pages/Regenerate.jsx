@@ -1,9 +1,12 @@
-import React from 'react'
 import { useEffect } from 'react';
 import { useParams } from 'react-router-dom';
 import { useGuest } from '../context/GuestContext';
 import GuestComponent from '../components/GuestComponent';
 import QRCodeComponent from '../components/QRCodeComponent';
+import Main from '../components/elements/Main';
+import Card from '../components/elements/Card';
+import SectionContainer from '../components/elements/SectionContainer';
+import Button from '../components/Buttons/Button';
 
 const Regenerate = () => {
 
@@ -18,8 +21,6 @@ const Regenerate = () => {
     const getDataIfParamExist = async () => {
         if (guestId) {
             await regenerateTokenGuest(guestId);
-        } else {
-         
         }
     }
 
@@ -29,17 +30,19 @@ const Regenerate = () => {
     }, [])
 
     return (
-        <div className='container'>
+        <Main>
+            <SectionContainer>
             {
                 loading === false ?
-                      <div className="card row mt-3">
-                          <div className='card-img-top mt-3' style={{width: '64rem'}}><QRCodeComponent token={data?.token} /></div>
+                        <Card className={'max-w-xl'}>
                             <GuestComponent guest={data.guest} />
-                            <button className='btn btn-success col-md-2' onClick={() => markArrival()}>authorize entry</button>
-                      </div>
+                            <QRCodeComponent token={data?.token} />
+                            <Button className={'bg-blue-950 w-full'} onClick={() => markArrival()}>Authorize entry</Button>
+                        </Card>
                     : <h1>loading...</h1>
                 }
-        </div>
+            </SectionContainer>
+        </Main>
     )
 }
 

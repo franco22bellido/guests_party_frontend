@@ -1,56 +1,65 @@
 import { useEffect } from 'react'
-import {useForm} from 'react-hook-form'
+import { useForm } from 'react-hook-form'
 import { useAuth } from '../context/AuthContext';
 import { Link, useNavigate } from 'react-router-dom';
+import Button from '../components/Buttons/Button'
+import Form from '../components/elements/Form'
+import SectionContainer from '../components/elements/SectionContainer'
+import Main from '../components/elements/Main'
+
+
 
 const RegisterPage = () => {
 
-    const {register, handleSubmit} = useForm();
-    const {signUp, isAuthenticated, errorAuth} = useAuth();
-    const navigate = useNavigate();
-
-    
-    useEffect(()=> {
-        if(isAuthenticated){
-            navigate('/');
-        }
-    }, [isAuthenticated]);
+  const { register, handleSubmit } = useForm();
+  const { signUp, isAuthenticated, errorAuth } = useAuth();
+  const navigate = useNavigate();
 
 
-    const onSubmit = handleSubmit(async (values)=> {
-        signUp(values);
-    });
+  useEffect(() => {
+    if (isAuthenticated) {
+      navigate('/');
+    }
+  }, [isAuthenticated]);
+
+
+  const onSubmit = handleSubmit(async (values) => {
+    signUp(values);
+  });
 
 
   return (
-    <div className='col-md-6 mx-auto my-5'>
-      {
-        errorAuth && 
-        errorAuth.map((error, i)=> (
-          <p key={i} className="alert alert-secondary" role="alert">{error}</p>
-        ))
-      }
+    <Main>
+      <SectionContainer className='w-full lg:w-[800px] mx-auto flex flex-col items-center'>
+        {
+          errorAuth &&
+          errorAuth.map((error, i) => (
+            <p key={i} className="alert alert-secondary" role="alert">{error}</p>
+          ))
+        }
 
-      <form onSubmit={onSubmit} className="form">
+        <Form onSubmit={onSubmit} className="border px-6 w-full md:w-[500px] flex flex-col gap-1 mt-10">
 
-        <label htmlFor="username" className="form-label">Username</label>
-        <input type="text" className='form-control'
-            {...register('username', {required: true})}
-        />
+          <h1 className='text-4xl text-center my-4'>Register</h1>
+          <label htmlFor="username" className="">Username</label>
+          <input type="text" className='border'
+            {...register('username', { required: true })}
+          />
 
-        <label htmlFor="email" className="form-label">Email address</label>
-        <input type="email" className='form-control'
-        {...register('email', {required: true})} />
+          <label htmlFor="email" className="">Email address</label>
+          <input type="email" className='border'
+            {...register('email', { required: true })} />
 
-        <label htmlFor="password" className="form-label">Password</label>
-        <input type="password"  className='form-control'
-        {...register('password', {required: true})} />
+          <label htmlFor="password" className="">Password</label>
+          <input type="password" className='border'
+            {...register('password', { required: true })} />
 
-        <button type='submit' className='btn btn-primary'>register</button>
-      </form>
-      <p>Do you already have an account?</p>
-      <Link to={'/login'}>Login</Link>
-    </div>
+          <Button className={'bg-blue-500 w-1/2 mx-auto'}>sign Up</Button>
+          <p>Do you already have an account?</p>
+          <Link className='text-blue-500 mb-4' to={'/login'}>Login</Link>
+        </Form>
+      </SectionContainer>
+    </Main>
   )
 }
 

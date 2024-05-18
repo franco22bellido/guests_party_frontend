@@ -1,27 +1,20 @@
-import React from 'react'
-
-const GuestComponent = ({guest, token}) => {
+const GuestComponent = ({ guest, token }) => {
 
 
     return (
-        <div className='card-body'>
-            <h5>First name:</h5>
-            <p>{guest?.firstName}</p>
-            <h5>Last name:</h5>
-            <p> {guest?.lastName}</p>
+        <>
+        <div className="flex flex-col items-center">
+            <p className="text-3xl">{guest?.firstName} {guest?.lastName}</p>
             {
                 guest?.state ?
                     <h5>State: Arrived</h5>
                     : <h5>State: Not arrived</h5>
             }
-            <h5>event name:</h5>
-            <p>{guest?.event.eventName}</p>
-            <h5>start date:</h5>
-            <p>{guest?.event.startDate}</p>
-            <h5>host username:</h5>
-            <p>{guest?.user.username}</p>
-            
+            <p className="font text-xl">event name: {guest?.event.eventName}</p>
+            <h5 className="font text-xl">start date: {guest?.event.startDate}</h5>
+            <h5 className="font  text-xl">host username: {guest?.user.username}</h5>
         </div>
+        </>
     )
 }
 

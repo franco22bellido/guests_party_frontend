@@ -1,11 +1,14 @@
-import React from 'react'
 import { useState } from 'react'
 import { useEffect } from 'react'
 import { Link, useParams } from 'react-router-dom'
 import { eventAndGuests } from '../../api/events.js'
 import { useAuth } from '../../context/AuthContext'
 import { useGuest } from '../../context/GuestContext.jsx'
-import {setStateById} from '../../api/guests.js'
+import { setStateById } from '../../api/guests.js'
+import Button from '../../components/Buttons/Button.jsx'
+import Main from '../../components/elements/Main.jsx'
+import Card from '../../components/elements/Card.jsx'
+import SectionContainer from '../../components/elements/SectionContainer'
 
 
 //esta pagina deberia tener otro nombre
@@ -14,7 +17,7 @@ const Event = () => {
     const { user } = useAuth();
     const [event, setEvent] = useState({});
     const [guestState, setGuest] = useState([]);
-    const { deleteGuest} = useGuest();
+    const { deleteGuest } = useGuest();
 
     const getData = async (eventId) => {
         const res = await eventAndGuests(eventId, user.token);
@@ -26,7 +29,7 @@ const Event = () => {
         await deleteGuest(guestId);
         getData(eventId)
     }
-    const markArrival = async (guestId)=> {
+    const markArrival = async (guestId) => {
         await setStateById(guestId, user.token);
         return await getData(eventId);
     }
@@ -37,36 +40,37 @@ const Event = () => {
 
 
     return (
-        <div className='container'>
-            <h2 className='col-md-4 mx-auto'>{event.eventName}</h2>
-
-            <Link className='btn btn-primary my-3 mx-2' to={`/create-guest/${event.id}`}>create new invitation</Link>
-
-            <div className='row'>
-                {
-                    guestState.map((guest, i) => (
-                        <div key={i} className="card col-md-3 mx-3">
-                            <div className='card-body'>
-                                <h5 className='card-title'>First name:</h5>
-                                <p className='card-text'>{guest.firstName}</p>
-                                <h5 className='card-title'>Last name</h5>
-                                <p className='card-text'>{guest.lastName}</p>
-                                <h5 className='card-title'>State:</h5>
+        <Main>
+            <SectionContainer className={'justify-center'}>
+                <h2 className='text-4xl font-semibold text-center w-full'>{event.eventName}</h2>
+                <Link className='' to={`/create-guest/${event.id}`}>
+                    <Button className={'w-full bg-green-900 px-2 py-1 my-5 '}>
+                        create new invitation
+                    </Button>
+                </Link>
+            </SectionContainer>
+            <SectionContainer>
+                    {
+                        guestState.map((guest, i) => (
+                            <Card key={i}>
+                                <h5 className='text-lg font-semibold'>Firstname:</h5>
+                                <p className='text-lg'>{guest.firstName}</p>
+                                <h5 className='text-lg font-semibold'>Lastname</h5>
+                                <p className='text-lg'>{guest.lastName}</p>
+                                <h5 className='text-lg font-semibold'>State:</h5>
                                 {
-                                    guest.state === true ? 
-                                    <p className="card-text">Arrived</p>
-                                    : <p className="card-text">Not arrived</p>
+                                    guest.state === true ?
+                                        <p className="text-lg">Arrived</p>
+                                        : <p className="text-lg">Not arrived</p>
                                 }
-                                <Link to={`/re-generate/${guest.id}`} className="btn btn-success">generate invitation</Link>
-                                <button className='btn btn-danger my-2' onClick={() => { deleteAndGetData(guest.id) }}>Delete</button>
-                                <button className='btn btn-primary' onClick={() => markArrival(guest.id)}>Change state</button>
-                            </div>
-                        </div>
-                    ))
-                }
-            </div>
-
-        </div>
+                                <Link to={`/re-generate/${guest.id}`} className="text-blue-600 text-lg">generate invitation</Link>
+                                <Button className='bg-red-700 w-full' onClick={() => { deleteAndGetData(guest.id) }}>Delete</Button>
+                                <Button className='bg-blue-500 w-full' onClick={() => markArrival(guest.id)}>Change state</Button>
+                            </Card>
+                        ))
+                    }
+            </SectionContainer>
+        </Main>
     )
 }
 

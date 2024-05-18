@@ -1,9 +1,18 @@
-import React, { useEffect } from 'react'
+import { useEffect } from 'react'
 import { useForm } from 'react-hook-form'
 import { Link, useParams } from 'react-router-dom';
 import GuestComponent from '../../components/GuestComponent.jsx';
 import QRCodeComponent from '../../components/QRCodeComponent.jsx';
 import { useGuest } from '../../context/GuestContext'
+
+import Form from '../../components/elements/Form'
+import Main from '../../components/elements/Main'
+import SectionContainer from '../../components/elements/SectionContainer'
+import Button from '../../components/Buttons/Button.jsx';
+import Card from '../../components/elements/Card.jsx';
+
+
+
 
 const CreateGuest = () => {
 
@@ -21,8 +30,10 @@ const CreateGuest = () => {
     setData(null);
   }, [])
   return (
-    <div className='container'>
-      <form onSubmit={onSubmit} className="form col-md-6 mx-auto my-4">
+    <Main>
+      <SectionContainer className={'justify-center'}>
+      
+      <Form onSubmit={onSubmit} className="form col-md-6 mx-auto my-4">
         {
           errorGuests && 
           errorGuests.map((error, i)=> (
@@ -30,8 +41,8 @@ const CreateGuest = () => {
           ))
         }
 
-        <label htmlFor="firstName" className="form-label">First name</label>
-        <input type="text" className='form-control'
+        <label htmlFor="firstName" className="">First name</label>
+        <input type="text" className='border py-1'
           {...register('firstName', { required: true })} />
 
 
@@ -42,7 +53,7 @@ const CreateGuest = () => {
           )
         }
         <label htmlFor="lastName" className="form-label">Last name</label>
-        <input type="text" className='form-control'
+        <input type="text" className='border py-1'
           {...register('lastName', { required: true })} />
         {
           errors.lastName &&
@@ -50,17 +61,22 @@ const CreateGuest = () => {
             <p className='alert alert-danger mt-3' role="alert">last name is required</p>
           )
         }
-        <button type='submit' className='btn btn-success my-3'>craete invitation</button>
-      </form>
+        <Button className={'bg-slate-900 mt-4 w-1/2 mx-auto'}>Create invitation</Button>
+        <Link className='text-blue-700' to={`/event-guests/${eventId}`}>Go to guests</Link>
+      </Form>
+      
+      </SectionContainer>
+      <SectionContainer className={'justify-center'}>
       {
         data &&
-          <div className="card row">
-              <div className='card-img-top mt-3' style={{width: '64rem'}}><QRCodeComponent token={data?.token} /></div>
+        <Card className={'max-w-96 p-0'}>
                 <GuestComponent guest={data.guest} />
-                <Link className='btn btn-primary col-md-2' to={`/event-guests/${data.guest.eventId}`}>Go to guests</Link>
-          </div>
+                <QRCodeComponent token={data?.token} />
+          </Card>
       }
-    </div>
+      </SectionContainer>
+   </Main>
+
   )
 }
 
