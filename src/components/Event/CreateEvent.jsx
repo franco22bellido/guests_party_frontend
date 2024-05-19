@@ -107,8 +107,6 @@ const CreateEvent = () => {
             events ?
               events.map((event, i) => (
                 <Card key={i}>
-
-
                   <h5 className="text-lg font-semibold">Event name:</h5>
                   <p className="card-text">{event.eventName}</p>
                   <h5 className="text-lg font-semibold">start date:</h5>
