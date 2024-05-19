@@ -1,7 +1,7 @@
 import { useState } from "react";
 import { createContext, useContext } from "react";
 import { useAuth } from "./AuthContext";
-import { createGuest, deleteOne, regenerateToken, seeInvitation, setState } from "../api/guests";
+import { createGuest, deleteOne, regenerateToken, seeInvitation, setState, setStateById } from "../api/guests";
 import { useEffect } from "react";
 import { toast } from "react-toastify";
 
@@ -41,7 +41,7 @@ export const GuestProvider = ({ children }) => {
     }
     const regenerateTokenGuest = async (guestId) => {
         try {
-            const res = await regenerateToken(guestId, user.token);
+            const res = await regenerateToken(guestId);
             setData(res.data);
             return setLoading(false);
         } catch (error) {
@@ -56,7 +56,7 @@ export const GuestProvider = ({ children }) => {
     const seeInvitationGuest = async (guestToken) => {
         try {
             const res = await seeInvitation(guestToken);
-            setData(res.data)
+            setData({...res.data, token: guestToken})
             setLoading(false);
             return res.data;
         } catch (error) {
@@ -70,7 +70,7 @@ export const GuestProvider = ({ children }) => {
     }
     const setStateGuest = async (guestToken)=> {
         try {
-            await setState(guestToken, user.token);
+            await setState(guestToken);
         } catch (error) {
             const message = error.response.data.message
             if(Array.isArray(message)){
@@ -80,10 +80,15 @@ export const GuestProvider = ({ children }) => {
             }
         }
     }
+    const markArrival = async ()=> {
+        await setState(data.token)
+        data.guest.state = !data.guest.state
+        setData({...data})
+    }
 
     const deleteGuest = async (guestId)=> {
         try {
-            await deleteOne(guestId, user.token);
+            await deleteOne(guestId);
         } catch (error) {
             const message = error.response.data.message
             if(Array.isArray(message)){
@@ -107,7 +112,7 @@ export const GuestProvider = ({ children }) => {
         <GuestContext.Provider value={{
             data, setData, create, regenerateTokenGuest, seeInvitationGuest,setStateGuest,
             deleteGuest, loading, setLoading,
-            errorGuests, setErrorGuests
+            errorGuests, setErrorGuests, markArrival
         }}>
             {children}
         </GuestContext.Provider>

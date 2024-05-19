@@ -1,67 +1,49 @@
 import { useSearchParams } from 'react-router-dom'
 import { useEffect } from 'react';
-import {Link} from 'react-router-dom';
+import { Link } from 'react-router-dom';
 import { useGuest } from '../../context/GuestContext.jsx';
 import { useAuth } from '../../context/AuthContext.jsx';
 import GuestComponent from '../../components/GuestComponent.jsx';
+import SectionContainer from '../../components/elements/SectionContainer.jsx';
+import Card from '../../components/elements/Card.jsx';
+import Button from '../../components/Buttons/Button.jsx';
 
 const SeeInvitation = () => {
-    
-    
-    const [searchParams] =  useSearchParams();
-    const {data, seeInvitationGuest, setStateGuest,loading, setLoading, errorGuests} = useGuest();;
-    const {user, isAuthenticated} = useAuth();
-    
-    const markArrival = async ()=> {
-        await setStateGuest(searchParams.get('token'));
-        return seeInvitationGuest(searchParams.get('token'));
-     
-    }
-    const seeInvitation  = async ()=> {
-        await seeInvitationGuest(searchParams.get('token'));
-    }
 
-    useEffect(()=> {
-       setLoading(true);
-       seeInvitation();
-    }, [])
+
+  const [searchParams] = useSearchParams();
+  const { data, markArrival, seeInvitationGuest, loading, setLoading, errorGuests } = useGuest();
+  const { user, isAuthenticated } = useAuth();
+
+  const seeInvitation = async () => {
+    await seeInvitationGuest(searchParams.get('token'));
+  }
+
+  useEffect(() => {
+    setLoading(true);
+    seeInvitation();
+  }, [])
   return (
-    <div className='container'>
+    <SectionContainer className={'flex-col items-center'}>
       {
         loading === false &&
-        <div className='card mt-3'>
-          <GuestComponent guest={data.guest}/>
-
+        <Card className={'w-[600px]'}>
+          <GuestComponent guest={data.guest} />
           {
-            //este codigo es el que autoriza la entrada
-            user?.data.id === data?.guest.userId ? 
-            <button className='btn btn-success col-md-2 ms-2 mb-2' onClick={()=> markArrival()}>authorize entry</button>
-            : <Link className='btn btn-primary col-md-2 ms-2 mb-2' to={'/login'}>login</Link>
-          }
-        </div>
+            user?.id === data.guest.userId &&
+            <Button className={'bg-slate-900 w-1/2 mt-3'} onClick={() => markArrival()}>Authorize entry</Button>}
+          {isAuthenticated ? <>
+            <Link className='text-blue-600 text-base font-semibold' to={'/'}>{`Go home`}</Link></>
+            : <Link className='text-blue-600 text-base font-semibold' to={'/login'}>Login</Link>}
+        </Card>
       }
-      {
-        errorGuests &&
-        (
-          <div className='col-md-6 mx-auto'>
-            {
-              errorGuests.map((error, i)=> (
-                <p className='alert alert-danger mt-4' key={i}>{error}</p>
-              ))
-            }
-          {
-            //este codigo te devuelve a home dependiendo de tu sesión
-            isAuthenticated &&
-              <Link className='btn btn-primary col-md-2 ms-2 mb-2' to={'/home'}>Go home</Link>
-            
-          }
-          </div>
-        )
-      }
-      
-     
-      
-    </div>
+      {errorGuests &&
+        errorGuests.map((error, i) => (
+          <>
+            <p className='alert alert-danger mt-4' key={i}>{error}</p>
+            <Link className='text-blue-600 text-base font-semibold' to={'/login'}>Login</Link>
+          </>))}
+    </SectionContainer>
   )
 }
 

@@ -82,10 +82,7 @@ export const AuthProvider = ({ children }) => {
 
                 setLoading(false);
                 setIsAuthenticated(true)
-                setUser({
-                    data: res.data,
-                    token: cookies.token
-                });
+                setUser(res.data);
             } catch (error) {
                 setLoading(false);
                 setIsAuthenticated(false);

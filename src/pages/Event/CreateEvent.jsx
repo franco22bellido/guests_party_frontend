@@ -1,14 +1,12 @@
-import { createEvent, getEvents, deleteEventAndGuests } from '../../api/events'
-import { useAuth } from '../../context/AuthContext'
+import { createEvent, getEvents } from '../../api/events.js'
 import { useForm } from 'react-hook-form';
-import { Link } from 'react-router-dom'
 import { useState } from 'react';
 import { useEffect } from 'react';
 import { toast } from 'react-toastify';
-import Button from '../Buttons/Button';
-import SectionContainer from '../elements/SectionContainer';
-import Form from '../elements/Form';
-import Card from '../elements/Card';
+import Button from '../../components/Buttons/Button.jsx';
+import SectionContainer from '../../components/elements/SectionContainer.jsx';
+import Form from '../../components/elements/Form.jsx';
+import EventList from '../../components/Event/EventList.jsx';
 
 
 const CreateEvent = () => {
@@ -16,12 +14,11 @@ const CreateEvent = () => {
   const notify = (message) => toast.success(message, { autoClose: 1500 });
   const { register, handleSubmit, formState: { errors } } = useForm();
   const [errorsApi, setErrorsApi] = useState(null);
-  const { user } = useAuth();
   const [events, setEvents] = useState(null);
 
   const onSubmit = handleSubmit(async data => {
     try {
-      await createEvent(data, user.token);
+      await createEvent(data);
       getEventsByUserId();
       notify('event saved!!');
     } catch (error) {
@@ -33,22 +30,9 @@ const CreateEvent = () => {
     }
   })
 
-  const getEventsByUserId = async () => {
-    try {
-      const res = await getEvents(user.token);
+  const getEventsByUserId = async () => {    
+      const res = await getEvents();
       setEvents(res.data);
-    } catch (error) {
-      console.log(error);
-    }
-  }
-  const deleteEvent = async (eventId) => {
-    try {
-      await deleteEventAndGuests(eventId);
-      await getEventsByUserId();
-
-    } catch (error) {
-      console.log(error)
-    }
   }
 
   useEffect(() => {
@@ -103,25 +87,7 @@ const CreateEvent = () => {
         </SectionContainer>
 
         <SectionContainer className={'justify-center'}>
-          {
-            events ?
-              events.map((event, i) => (
-                <Card key={i}>
-                  <h5 className="text-lg font-semibold">Event name:</h5>
-                  <p className="card-text">{event.eventName}</p>
-                  <h5 className="text-lg font-semibold">start date:</h5>
-                  <p className="card-text">{event.startDate}</p>
-                  <Link to={`/event-Guests/${event.id}`} className='text-blue-600'>view guests</Link>
-
-                  <Button
-                    onClick={() => { deleteEvent(event.id) }}
-                    className={'bg-red-600 w-full'}
-                    type={'button'}
-                  >Delete</Button>
-                </Card>
-              ))
-              : <h5>no hay eventos</h5>
-          }
+          <EventList events={events} setEvents={setEvents}/>
         </SectionContainer>
     </>
   )

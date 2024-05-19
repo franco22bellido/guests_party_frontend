@@ -2,10 +2,10 @@ import { useEffect, useState } from 'react'
 import { Link, useParams } from 'react-router-dom'
 import { eventAndGuests } from '../../api/events.js'
 import Button from '../../components/Buttons/Button.jsx'
-import SectionContainer from '../../components/elements/SectionContainer'
+import SectionContainer from '../../components/elements/SectionContainer.jsx'
 import GuestList from '../../components/GuestList.jsx'
 
-const Event = () => {
+const GuestsPage = () => {
     let { eventId } = useParams();
     const [event, setEvent] = useState({});
     const [guests, setGuests] = useState([]);
@@ -40,5 +40,5 @@ const Event = () => {
     )
 }
 
-export default Event
+export default GuestsPage
 

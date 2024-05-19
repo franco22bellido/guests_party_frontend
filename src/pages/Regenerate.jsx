@@ -11,12 +11,8 @@ import Button from '../components/Buttons/Button';
 const Regenerate = () => {
 
     let { guestId } = useParams();
-    const { regenerateTokenGuest, data, setStateGuest, loading, setLoading} = useGuest();
+    const { regenerateTokenGuest, data, loading, setLoading, markArrival} = useGuest();
 
-    const markArrival = async () => {
-        await setStateGuest(data.token);
-        return regenerateTokenGuest(data.guest.id);
-    }
     
     const getDataIfParamExist = async () => {
         if (guestId) {

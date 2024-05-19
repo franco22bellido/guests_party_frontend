@@ -4,8 +4,7 @@ import RegisterPage from './pages/RegisterPage'
 import LoginPage from './pages/LoginPage'
 import { AuthProvider } from './context/AuthContext'
 import ProtectedRoute from './ProtectedRoute'
-import CreateEvent from './components/Event/CreateEvent'
-import Event from './pages/Event/Event'
+import CreateEvent from './pages/Event/CreateEvent'
 import CreateGuest from './pages/Guest/CreateGuest'
 import Regenerate from './pages/Regenerate'
 import SeeInvitation from './pages/Guest/SeeInvitation'
@@ -15,6 +14,7 @@ import 'react-toastify/dist/ReactToastify.css';
 import { ToastContainer } from 'react-toastify';
 import AutoLogin from './components/AutoLogin'
 import Main from './components/elements/Main'
+import GuestsPage from './pages/Event/GuestsPage'
 
 function App() {
 
@@ -39,7 +39,7 @@ function App() {
                 <Route path='/scanQr' element={<ScanQrComponent />} />
                 <Route path='/' element={<CreateEvent />} />
                 {/* mis eventos */}
-                <Route path='/event-Guests/:eventId' element={<Event />} />
+                <Route path='/event-Guests/:eventId' element={<GuestsPage />} />
                 {/* un evento y sus invitados */}
                 <Route path='/create-guest/:eventId' element={<CreateGuest />} />
                 {/* crear un invitado */}
