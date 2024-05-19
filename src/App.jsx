@@ -32,14 +32,19 @@ function App() {
 
               {/* use this endpoint senting the query ?token=aodkaspo */}
               <Route path="/see-invitation/" exact element={<SeeInvitation />} />
+              {/* ver una invitación por su token */}
 
 
               <Route element={<ProtectedRoute />}>
                 <Route path='/scanQr' element={<ScanQrComponent />} />
                 <Route path='/' element={<CreateEvent />} />
+                {/* mis eventos */}
                 <Route path='/event-Guests/:eventId' element={<Event />} />
+                {/* un evento y sus invitados */}
                 <Route path='/create-guest/:eventId' element={<CreateGuest />} />
+                {/* crear un invitado */}
                 <Route path='/re-generate/:guestId' element={<Regenerate />} />
+                {/* ver una invitación nuevamente basandonos en su id */}
               </Route>
 
             </Routes>

@@ -37,7 +37,9 @@ const Regenerate = () => {
                         <Card className={'max-w-xl'}>
                             <GuestComponent guest={data.guest} />
                             <QRCodeComponent token={data?.token} />
-                            <Button className={'bg-blue-950 w-full'} onClick={() => markArrival()}>Authorize entry</Button>
+                            <Button 
+                            className={'bg-blue-950 w-full'} 
+                            onClick={() => markArrival()}>Authorize entry</Button>
                         </Card>
                     : <h1>loading...</h1>
                 }

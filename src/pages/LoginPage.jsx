@@ -34,7 +34,7 @@ const LoginPage = () => {
           ))
         }
 
-        <Form>
+        <Form onSubmit={onSubmit}>
           <h1 className='text-4xl text-center mb-7'>Login</h1>
           <label htmlFor="email" className="">Email address</label>
           <input className='border' type="email"

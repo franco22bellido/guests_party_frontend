@@ -4,7 +4,6 @@ import { useForm } from 'react-hook-form';
 import { Link } from 'react-router-dom'
 import { useState } from 'react';
 import { useEffect } from 'react';
-import ModalDelete from '../ModalDeleteEvent';
 import { toast } from 'react-toastify';
 import Button from '../Buttons/Button';
 import SectionContainer from '../elements/SectionContainer';
@@ -19,7 +18,6 @@ const CreateEvent = () => {
   const [errorsApi, setErrorsApi] = useState(null);
   const { user } = useAuth();
   const [events, setEvents] = useState(null);
-  const [eventIdSelected, setEventIdSelected] = useState();
 
   const onSubmit = handleSubmit(async data => {
     try {
@@ -43,14 +41,9 @@ const CreateEvent = () => {
       console.log(error);
     }
   }
-  const handleClickDelete = async (eventId) => {
-    setEventIdSelected(eventId);
-  }
-
-  const deleteEvent = async () => {
+  const deleteEvent = async (eventId) => {
     try {
-
-      await deleteEventAndGuests(eventIdSelected, user.token);
+      await deleteEventAndGuests(eventId);
       await getEventsByUserId();
 
     } catch (error) {
@@ -123,7 +116,7 @@ const CreateEvent = () => {
                   <Link to={`/event-Guests/${event.id}`} className='text-blue-600'>view guests</Link>
 
                   <Button
-                    onClick={() => { handleClickDelete(event.id) }}
+                    onClick={() => { deleteEvent(event.id) }}
                     className={'bg-red-600 w-full'}
                     type={'button'}
                   >Delete</Button>
