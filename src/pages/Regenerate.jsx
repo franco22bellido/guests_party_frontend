@@ -7,6 +7,7 @@ import Main from '../components/elements/Main';
 import Card from '../components/elements/Card';
 import SectionContainer from '../components/elements/SectionContainer';
 import Button from '../components/Buttons/Button';
+import DownloadImage from '../components/DownloadImage';
 
 const Regenerate = () => {
 
@@ -31,8 +32,10 @@ const Regenerate = () => {
             {
                 loading === false ?
                         <Card className={'max-w-xl'}>
+                            <DownloadImage>
                             <GuestComponent guest={data.guest} />
                             <QRCodeComponent token={data?.token} />
+                            </DownloadImage>
                             <Button 
                             className={'bg-blue-950 w-full'} 
                             onClick={() => markArrival()}>Authorize entry</Button>

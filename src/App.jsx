@@ -15,6 +15,7 @@ import { ToastContainer } from 'react-toastify';
 import AutoLogin from './components/AutoLogin'
 import Main from './components/elements/Main'
 import GuestsPage from './pages/Event/GuestsPage'
+import DownloadImage from './components/DownloadImage'
 
 function App() {
 
