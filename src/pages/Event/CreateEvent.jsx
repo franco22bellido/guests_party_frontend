@@ -20,7 +20,7 @@ const CreateEvent = () => {
     <>
       <SectionContainer>
         <Form onSubmit={onSubmit}>
-          <Errors errors={errorsApi}/>
+          <Errors errors={errorsApi} />
           <label htmlFor="eventName" className="">Event name</label>
           <input type="text"
             {...register('eventName', { required: true })} className='border' />
@@ -31,10 +31,19 @@ const CreateEvent = () => {
               </p>
             )
           }
-
+          <label htmlFor="" className="">Event location</label>
+          <input type="text"
+            {...register('eventLocation', { required: true })} className='border' />
+          {
+            errors.eventLocation && (
+              <p className="text-red-600" role="alert">
+                Event location is required
+              </p>
+            )
+          }
 
           <label htmlFor="startDate" className="form-label">Start Date</label>
-          <input type="text"
+          <input type="date"
             {...register('startDate', { required: true })} className='border' />
           {
             errors.startDate &&
@@ -45,7 +54,7 @@ const CreateEvent = () => {
           <Button className={'bg-blue-500 mx-auto w-1/2'}>save event</Button>
         </Form>
       </SectionContainer>
-          <Loader loading={loading}/> 
+      <Loader loading={loading} />
       <SectionContainer className={'justify-center'}>
         <EventList events={events} deleteEvent={deleteEvent} />
       </SectionContainer>

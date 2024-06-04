@@ -4,7 +4,6 @@ import { useGuest } from "../context/GuestContext";
 import { setArribalById } from '../api/guests.js'
 import Button from "./Buttons/Button.jsx";
 import GuestComponent from "./GuestComponent.jsx";
-import GuestsPage from "../pages/Event/GuestsPage.jsx";
 
 const GuestList = ({Guests=[], setGuests=()=>{}}) => {
     const { deleteGuest } = useGuest();
@@ -24,10 +23,11 @@ const GuestList = ({Guests=[], setGuests=()=>{}}) => {
             return guest;
         }))
     }
+
   return (
     <>
     {
-        GuestsPage.length > 0 ?
+        Guests.length > 0 ?
         Guests.map((guest, i) => (
             <Card key={i}>
                 <GuestComponent guest={guest}/>
