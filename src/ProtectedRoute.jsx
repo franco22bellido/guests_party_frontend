@@ -1,12 +1,12 @@
-import React from 'react'
+import Loader from './components/Loader';
 import { useAuth } from './context/AuthContext'
 import { Navigate, Outlet} from 'react-router-dom'; 
 
 const ProtectedRoute = () => {
-    const {loading ,user, isAuthenticated}  = useAuth();
+    const {loading , isAuthenticated}  = useAuth();
 
     if(loading){
-        return <div>loading...</div>
+      return <div className='h-[300px] flex justify-center items-center'><Loader loading={loading}/></div>
     }
 
     if(!isAuthenticated && !loading){

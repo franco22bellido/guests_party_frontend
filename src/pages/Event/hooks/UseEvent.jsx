@@ -28,6 +28,8 @@ const UseEvent = () => {
       } else {
         return setErrorsApi([error.response.data.message]);
       }
+    } finally{
+      setLoading(false)
     }
   }
   const deleteEvent = async (eventId) => {

@@ -5,6 +5,7 @@ import Form from '../../components/elements/Form.jsx';
 import EventList from '../../components/Event/EventList.jsx';
 import UseEvent from './hooks/UseEvent.jsx';
 import Loader from '../../components/Loader.jsx';
+import Errors from '../../components/Errors/Errors.jsx';
 
 
 const CreateEvent = () => {
@@ -19,18 +20,13 @@ const CreateEvent = () => {
     <>
       <SectionContainer>
         <Form onSubmit={onSubmit}>
-          {
-            errorsApi &&
-            errorsApi.map((error, i) => (
-              <p className='text-red-700' role={'alert'} key={i}>{error}</p>
-            ))
-          }
+          <Errors errors={errorsApi}/>
           <label htmlFor="eventName" className="">Event name</label>
           <input type="text"
             {...register('eventName', { required: true })} className='border' />
           {
             errors.eventName && (
-              <p className="alert alert-danger mt-3" role="alert">
+              <p className="text-red-600" role="alert">
                 Event name is required
               </p>
             )
@@ -42,7 +38,7 @@ const CreateEvent = () => {
             {...register('startDate', { required: true })} className='border' />
           {
             errors.startDate &&
-            <p className="alert alert-danger mt-3" role={'alert'}>
+            <p className="text-red-600" role="alert">
               Start date is required
             </p>
           }

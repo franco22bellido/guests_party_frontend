@@ -4,6 +4,7 @@ import { useGuest } from "../context/GuestContext";
 import { setArribalById } from '../api/guests.js'
 import Button from "./Buttons/Button.jsx";
 import GuestComponent from "./GuestComponent.jsx";
+import GuestsPage from "../pages/Event/GuestsPage.jsx";
 
 const GuestList = ({Guests=[], setGuests=()=>{}}) => {
     const { deleteGuest } = useGuest();
@@ -26,6 +27,7 @@ const GuestList = ({Guests=[], setGuests=()=>{}}) => {
   return (
     <>
     {
+        GuestsPage.length > 0 ?
         Guests.map((guest, i) => (
             <Card key={i}>
                 <GuestComponent guest={guest}/>
@@ -34,6 +36,7 @@ const GuestList = ({Guests=[], setGuests=()=>{}}) => {
                 <Button className='bg-blue-500 w-full' onClick={() => markArrival(guest.id)}>Change state</Button>
             </Card>
         ))
+        : <h3 className="font-semibold">There are no guests yet...</h3>
     }
     </>
   )
