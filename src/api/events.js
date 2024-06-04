@@ -6,7 +6,7 @@ export const getEvents = async ()=> {
 export const createEvent = async (data)=> {
     return await axios.post('/events',data );
 }
-export const eventAndGuests = async (eventId)=> {
+export const getGuestsByEventId = async (eventId)=> {
     return await axios.get(`/events/EventAndGuests/${eventId}`);
 }
 

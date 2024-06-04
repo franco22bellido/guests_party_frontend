@@ -1,46 +1,51 @@
-import React, { useEffect } from 'react'
-import { useState } from 'react';
-import { Link } from 'react-router-dom'
-import { useAuth } from '../context/AuthContext'
+import { Link } from "react-router-dom"
+import { useAuth } from "../context/AuthContext"
 
 const Navbar = () => {
 
-    const {isAuthenticated, logOut} = useAuth();
-
-
+    const { isAuthenticated } = useAuth()
 
     return (
-        <nav className="navbar navbar-expand-lg bg-light">
-            <div className="container-fluid">
-                <Link className="navbar-brand" to="/home">home</Link>
-                <button className="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNavAltMarkup" aria-controls="navbarNavAltMarkup" aria-expanded="false" aria-label="Toggle navigation">
-                    <span className="navbar-toggler-icon"></span>
-                </button>
-                <div className="collapse navbar-collapse" id="navbarNavAltMarkup">
+        <header>
 
-                    {
-                        isAuthenticated === true ? 
-                    <div className="navbar-nav">
-                        {/* <Link className="nav-link active" aria-current="page" to="create-event">Create new event</Link> */}
-                        <Link className="nav-link" onClick={()=> logOut()}>logout</Link>
-                        <Link className="nav-link" to="/scanQr">scan Qr</Link>
-                        {/* <Link className="nav-link" to={''}>Disabled</Link> */}
-                    </div>
-                        :
-                    <div className="navbar-nav">
-                        <Link className="nav-link active" aria-current="page" to="/login">Sign In</Link>
-                        <Link className="nav-link" to="/register">Sign Up</Link>
-                        {/* <Link className="nav-link" to={''}>Disabled</Link> */}
-                    </div>
-                    }
 
+            <nav className="bg-white border-gray-200 dark:bg-gray-900 mb-5 lg:px-64">
+                <div className="max-w-screen-xl flex flex-wrap items-center justify-between mx-auto p-4">
+                    <Link to={'/'} className="flex items-center space-x-3 rtl:space-x-reverse">
+                        <span className="self-center text-2xl font-semibold whitespace-nowrap dark:text-white">GuestsParty</span>
+                    </Link>
+                    <ul className="flex flex-row p-0  mt-0 border-gray-100 rounded-lg bg-gray-50 md:space-x-8 rtl:space-x-reverse md:flex-row md:mt-0 md:border-0 md:bg-white dark:bg-gray-800 md:dark:bg-gray-900 dark:border-gray-700">
+
+                        {
+                            isAuthenticated ? 
+
+                        <>
+                         <li>
+                            <Link to="/" className="block py-2 px-3 text-white bg-blue-700 rounded md:bg-transparent md:text-blue-700 md:p-0 md:dark:text-blue-500" aria-current="page">Home</Link>
+                         </li>
+                         <li>
+                             <Link to="/logOut" className="block py-2 px-3 text-white bg-blue-700 rounded md:bg-transparent md:text-blue-700 md:p-0 md:dark:text-blue-500" aria-current="page">Logout</Link>
+                        </li>
+                        </>
+                         
+                            :
+                        <>
+                         <li>
+                            <Link to="/login" className="block py-2 px-3 text-white bg-blue-700 rounded md:bg-transparent md:text-blue-700 md:p-0 md:dark:text-blue-500" aria-current="page">Sign In</Link>
+                         </li>
+                         <li>
+                            <Link to="/register" className="block py-2 px-3 text-white bg-blue-700 rounded md:bg-transparent md:text-blue-700 md:p-0 md:dark:text-blue-500" aria-current="page">Sign Up</Link>
+                         </li>
+                        </>
+                        }
+
+                    </ul>
                 </div>
-            </div>
-        </nav>
+            </nav>
+        </header>
     )
 }
 
 export default Navbar
 
 
-// login, register, events= homepage, create new event logout

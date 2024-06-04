@@ -12,11 +12,11 @@ const SeeInvitation = () => {
 
 
   const [searchParams] = useSearchParams();
-  const { data, markArrival, seeInvitationGuest, loading, setLoading, errorGuests } = useGuest();
+  const { data, markArrival, getGuestByToken, loading, setLoading, errorGuests } = useGuest();
   const { user, isAuthenticated } = useAuth();
 
   const seeInvitation = async () => {
-    await seeInvitationGuest(searchParams.get('token'));
+    await getGuestByToken(searchParams.get('token'));
   }
 
   useEffect(() => {
@@ -26,17 +26,19 @@ const SeeInvitation = () => {
   return (
     <SectionContainer className={'flex-col items-center'}>
       {
-        loading === false &&
-        <Card className={'w-[600px]'}>
-          <GuestComponent guest={data.guest} />
+        loading === false && data &&
+        <Card className={'md:w-96 md:h-auto p-0'}>
+            <GuestComponent guest={data?.guest} />
           {
-            user?.id === data.guest.userId &&
-            <Button className={'bg-slate-900 w-1/2 mt-3'} onClick={() => markArrival()}>Authorize entry</Button>}
+            user?.id === data.guest?.userId &&
+            <Button className={'bg-slate-900 w-full'} onClick={() => markArrival()}>Authorize entry</Button>}
           {isAuthenticated ? <>
             <Link className='text-blue-600 text-base font-semibold' to={'/'}>{`Go home`}</Link></>
             : <Link className='text-blue-600 text-base font-semibold' to={'/login'}>Login</Link>}
         </Card>
       }
+
+      
       {errorGuests &&
         errorGuests.map((error, i) => (
           <>

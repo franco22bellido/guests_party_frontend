@@ -20,7 +20,7 @@ export const AuthProvider = ({ children }) => {
     const [user, setUser] = useState(null);
     const [isAuthenticated, setIsAuthenticated] = useState(false);
     const [loading, setLoading] = useState(true);
-    const [errorAuth, setErrorAuth] = useState(null);
+    const [errors, setErrors] = useState([]);
     const notify = (message) => toast.success(message, { autoClose: 1500 });
 
     const signUp = async (user) => {
@@ -31,9 +31,9 @@ export const AuthProvider = ({ children }) => {
         } catch (error) {
 
             if (Array.isArray(error.response.data.message)) {
-                setErrorAuth(error.response.data.message)
+                setErrors(error.response.data.message)
             } else {
-                setErrorAuth([error.response.data.message])
+                setErrors([error.response.data.message])
             }
         }
     }
@@ -46,21 +46,20 @@ export const AuthProvider = ({ children }) => {
             return res;
         } catch (error) {
             if (Array.isArray(error.response.data.message)) {
-                setErrorAuth(error.response.data.message);
+                setErrors(error.response.data.message);
             } else {
-                setErrorAuth([error.response.data.message]);
+                setErrors([error.response.data.message]);
             }
         }
     }
 
-
     useEffect(() => {
-        if (errorAuth) {
+        if (errors.length > 0) {
             setTimeout(() => {
-                setErrorAuth(null);
+                setErrors([]);
             }, 4000);
         }
-    }, [errorAuth])
+    }, [errors])
 
 
     useEffect(() => {
@@ -110,7 +109,7 @@ export const AuthProvider = ({ children }) => {
             user,
             isAuthenticated,
             loading,
-            errorAuth,
+            errors,
             logOut
         }}>
             {children}

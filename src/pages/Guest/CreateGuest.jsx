@@ -10,7 +10,8 @@ import Main from '../../components/elements/Main'
 import SectionContainer from '../../components/elements/SectionContainer'
 import Button from '../../components/Buttons/Button.jsx';
 import Card from '../../components/elements/Card.jsx';
-
+import DownloadImage from '../../components/DownloadImage.jsx';
+import Loader from '../../components/Loader'
 
 
 
@@ -66,12 +67,14 @@ const CreateGuest = () => {
       </Form>
       
       </SectionContainer>
+      <Loader/>
       <SectionContainer className={'justify-center'}>
-      {
-        data &&
-        <Card className={'max-w-96 p-0'}>
-                <GuestComponent guest={data.guest} />
+      {data &&
+        <Card className={'md:w-96 md:h-auto p-0'}>
+          <DownloadImage>
+                <GuestComponent guest={data?.guest} />
                 <QRCodeComponent token={data?.token} />
+          </DownloadImage>
           </Card>
       }
       </SectionContainer>

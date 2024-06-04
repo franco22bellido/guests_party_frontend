@@ -15,7 +15,7 @@ import { ToastContainer } from 'react-toastify';
 import AutoLogin from './components/AutoLogin'
 import Main from './components/elements/Main'
 import GuestsPage from './pages/Event/GuestsPage'
-import DownloadImage from './components/DownloadImage'
+import Navbar from './components/Navbar'
 
 function App() {
 
@@ -26,6 +26,7 @@ function App() {
         <Main>
           <BrowserRouter>
             <ToastContainer theme={"colored"} />
+            <Navbar/>
             <Routes>
               <Route path='/login' element={<LoginPage />} />
               <Route path='/register' element={<RegisterPage />} />
@@ -47,7 +48,6 @@ function App() {
                 <Route path='/re-generate/:guestId' element={<Regenerate />} />
                 {/* ver una invitación nuevamente basandonos en su id */}
               </Route>
-
             </Routes>
           </BrowserRouter>
         </Main>

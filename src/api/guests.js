@@ -11,14 +11,14 @@ export const seeInvitation = async (guestToken)=> {
     return await axios.get(`/guests/${guestToken}`);
 }
 
-export const setState = async (guestToken)=> {
-    return await axios.put(`/guests/${guestToken}`);
-}
 export const deleteOne = async (guestId)=> {
     return await axios.delete(`/guests/${guestId}`);
 }
 
-export const setStateById = async (guestId)=> {
+export const setArrival = async (guestToken)=> {
+    return await axios.put(`/guests/${guestToken}`);
+}
+export const setArribalById = async (guestId)=> {
     return await axios.put(`/guests/setStateById/${guestId}`)
 }
 
