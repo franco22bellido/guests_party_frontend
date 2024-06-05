@@ -39,6 +39,7 @@ export const AuthProvider = ({ children }) => {
     }
     const signIn = async (user) => {
         try {
+            setLoading(true)
             const res = await loginRequest(user);
             setUser(res.data);
             setIsAuthenticated(true);
@@ -50,6 +51,8 @@ export const AuthProvider = ({ children }) => {
             } else {
                 setErrors([error.response.data.message]);
             }
+        } finally{
+            setLoading(false)
         }
     }
 

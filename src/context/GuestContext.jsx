@@ -16,10 +16,10 @@ export const useGuest = () => {
 
 export const GuestProvider = ({ children }) => {
 
-    const {createNotification} = useToastNotify()
+    const { createNotification } = useToastNotify()
     const [data, setData] = useState(null);
-    const [loading,  setLoading] = useState(false);
-    const [errorGuests, setErrorGuests] =  useState([]);
+    const [loading, setLoading] = useState(false);
+    const [errorGuests, setErrorGuests] = useState([]);
 
 
 
@@ -33,9 +33,9 @@ export const GuestProvider = ({ children }) => {
             createNotification('Guest saved susefully!');
         } catch (error) {
             const message = error.response.data.message
-            if(Array.isArray(message)){
+            if (Array.isArray(message)) {
                 setErrorGuests(message);
-            }else {
+            } else {
                 setErrorGuests([message]);
             }
         }
@@ -49,9 +49,9 @@ export const GuestProvider = ({ children }) => {
         } catch (error) {
             console.log(error)
             const message = error.response.data.message
-            if(Array.isArray(message)){
+            if (Array.isArray(message)) {
                 setErrorGuests(message);
-            }else {
+            } else {
                 setErrorGuests([message]);
             }
         }
@@ -60,47 +60,47 @@ export const GuestProvider = ({ children }) => {
         try {
             setLoading(true)
             const res = await seeInvitation(guestToken);
-            setData({...res.data, token: guestToken})
+            setData({ ...res.data, token: guestToken })
             setLoading(false);
             return res.data;
         } catch (error) {
             const message = error.response.data.message
-            if(Array.isArray(message)){
+            if (Array.isArray(message)) {
                 setErrorGuests(message)
-            }else {
+            } else {
                 setErrorGuests([message])
             }
         }
     }
-    const markArrival = async ()=> {
+    const markArrival = async () => {
         await setArrival(data.token)
         data.guest.state = !data.guest.state
-        setData({...data})
+        setData({ ...data })
     }
 
-    const deleteGuest = async (guestId)=> {
+    const deleteGuest = async (guestId) => {
         try {
             setLoading(true)
             await deleteOne(guestId);
             setLoading(false)
         } catch (error) {
             const message = error.response.data.message
-            if(Array.isArray(message)){
+            if (Array.isArray(message)) {
                 setErrorGuests(message);
-            }else {
+            } else {
                 setErrorGuests([message]);
             }
         }
     }
 
 
-    useEffect(()=> {
-        if(errorGuests){
+    useEffect(() => {
+        if (errorGuests) {
             setTimeout(() => {
                 setErrorGuests([]);
             }, 6500);
         }
-    } , [errorGuests])
+    }, [errorGuests])
 
     return (
         <GuestContext.Provider value={{
