@@ -70,7 +70,7 @@ export const GuestProvider = ({ children }) => {
             } else {
                 setErrorGuests([message])
             }
-        }
+        } finally{setLoading(false);}
     }
     const markArrival = async () => {
         await setArrival(data.token)
