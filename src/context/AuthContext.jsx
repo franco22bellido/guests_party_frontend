@@ -68,20 +68,8 @@ export const AuthProvider = ({ children }) => {
     useEffect(() => {
 
         async function checkLogin() {
-            const cookies = Cookies.get();
-            if (!cookies.token) {
-                setIsAuthenticated(false);
-                setUser(null);
-                setLoading(false);
-            }
             try {
-                //revisar, el token si es invalido igual responde un res.data
-                const res = await verifyToken(cookies.token);
-                if (!res.data) {
-                    setLoading(false);
-                    return setIsAuthenticated(false);
-                }
-
+                const res = await verifyToken();
                 setLoading(false);
                 setIsAuthenticated(true)
                 setUser(res.data);
@@ -90,7 +78,6 @@ export const AuthProvider = ({ children }) => {
                 setIsAuthenticated(false);
                 setUser(null);
             }
-
         }
         checkLogin();
     }, [])
