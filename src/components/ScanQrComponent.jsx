@@ -42,11 +42,11 @@ const ScanQrComponent = () => {
     const res = await getGuestByToken(tokenFound)
     navigate(`/see-invitation/?token=${tokenFound}`)
     if (res) {
-      console.log(res)
+
       setValidation(true)
     }
     else {
-      console.log(errorGuests)
+    
       setValidation(false)
     }
   }
