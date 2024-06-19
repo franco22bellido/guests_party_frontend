@@ -10,10 +10,15 @@ const UseEvent = () => {
   const [loading, setLoading] = useState(true);
 
   const getMyEvents = async () => {
-    setLoading(true)
-    const res = await getEvents();
-    setLoading(false)
-    setEvents(res.data);
+    try {
+      setLoading(true)
+      const res = await getEvents();
+      setLoading(false)
+      setEvents(res.data);
+    } catch (error) {
+      console.log(error)
+      setLoading(false)
+    }
   }
   const addEvent = async (values) => {
     try {

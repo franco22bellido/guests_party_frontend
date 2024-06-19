@@ -95,7 +95,7 @@ export const GuestProvider = ({ children }) => {
 
 
     useEffect(() => {
-        if (errorGuests) {
+        if (errorGuests.length > 0) {
             setTimeout(() => {
                 setErrorGuests([]);
             }, 6500);
