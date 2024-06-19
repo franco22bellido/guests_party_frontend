@@ -78,7 +78,7 @@ const ScanQrComponent = () => {
   },[qrDecoded])
 
   return (
-    <section className='w-11/12 flex flex-col items-center mx-auto'>
+    <section className='w-full flex flex-col items-center mx-auto'>
       <Errors errors={errorGuests} />
       <Loader loading={loading}/>
       <video className='border w-full h-auto rounded md:w-[60%]' id='video' autoPlay ref={video => { setVideoProperties(video) }}></video>
