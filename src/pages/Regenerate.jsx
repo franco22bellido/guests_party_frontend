@@ -31,7 +31,7 @@ const Regenerate = () => {
         <Main>
             <SectionContainer>
                 {
-                    data &&
+                    data && data.guest?.id == guestId &&
                     <Card className={'md:w-[400px] md:h-auto'}>
                         <DownloadImage>
                             <GuestComponent guest={data?.guest} />
