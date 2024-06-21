@@ -15,7 +15,4 @@ export const verifyToken = async (token) => {
         }
     });
 }
-export const logOut = async () => {
-    const res = await axios.delete(`/auth/logOut`)
-    console.log(res)
-}
+export const logOut = async () => await axios.delete(`/auth/logOut`)

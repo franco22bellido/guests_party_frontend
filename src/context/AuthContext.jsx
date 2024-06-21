@@ -83,7 +83,6 @@ export const AuthProvider = ({ children }) => {
 
     const clearSession = async () => {
         try {
-            console.log("cerrando sesión")
             await logOut()
             setUser(null);
             setLoading(false);
