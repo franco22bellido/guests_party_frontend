@@ -1,8 +1,7 @@
 import { useContext, useEffect } from "react";
 import { createContext, useState } from "react";
 import { registerRequest, verifyToken } from '../api/auth'
-import { loginRequest } from "../api/auth";
-import Cookies from 'js-cookie'
+import { loginRequest, logOut} from "../api/auth";
 import { toast } from "react-toastify";
 
 
@@ -82,13 +81,15 @@ export const AuthProvider = ({ children }) => {
         checkLogin();
     }, [])
 
-    const logOut = async () => {
-        const cookies = Cookies.get();
-        if (cookies.token) {
-            Cookies.remove('token');
+    const clearSession = async () => {
+        try {
+            console.log("cerrando sesión")
+            await logOut()
             setUser(null);
             setLoading(false);
             setIsAuthenticated(false);
+        } catch (error) {
+            console.log(error)
         }
     }
 
@@ -100,7 +101,7 @@ export const AuthProvider = ({ children }) => {
             isAuthenticated,
             loading,
             errors,
-            logOut
+            clearSession
         }}>
             {children}
         </AuthContext.Provider>

@@ -20,10 +20,8 @@ const ScanQrComponent = () => {
 
   const stopCamera = async () => {
     if (stream) {
-      console.log("cerrando camara")
       await stream.getTracks().forEach(track => track.stop());
       ScannerState.stop()
-      console.log("camara cerrada")
     }
   };
   useEffect(()=> {

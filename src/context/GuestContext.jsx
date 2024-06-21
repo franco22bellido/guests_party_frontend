@@ -27,7 +27,6 @@ export const GuestProvider = ({ children }) => {
         try {
             setLoading(true)
             const res = await createGuest(data);
-            console.log(res)
             setLoading(false)
             setData(res.data);
             createNotification('Guest saved susefully!');
