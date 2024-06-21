@@ -53,7 +53,6 @@ const ScanQrComponent = () => {
   useEffect(()=> {
     const validateInvitation = async () => {
       try {
-        console.log(qrDecoded)
         let urlValid = qrDecoded.includes(`${window.location.origin}/see-invitation/?token=`)
         if (!urlValid) return setErrorGuests(['the scanned url is not valid'])
         let tokenFound = qrDecoded.replace(`${window.location.origin}/see-invitation/?token=`, '')

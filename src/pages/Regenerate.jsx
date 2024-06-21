@@ -13,7 +13,7 @@ import Loader from '../components/Loader';
 const Regenerate = () => {
 
     let { guestId } = useParams();
-    const { getGuestById, data, loading, markArrival } = useGuest();
+    const { getGuestById, data, markArrival, setData} = useGuest();
 
 
     const getDataIfParamExist = async () => {
@@ -24,13 +24,14 @@ const Regenerate = () => {
 
     useEffect(() => {
         getDataIfParamExist();
+        return ()=> setData(null)
     }, [])
 
     return (
         <Main>
             <SectionContainer>
                 {
-                    loading === false &&
+                    data &&
                     <Card className={'md:w-[400px] md:h-auto'}>
                         <DownloadImage>
                             <GuestComponent guest={data?.guest} />
