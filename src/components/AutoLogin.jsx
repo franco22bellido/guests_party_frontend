@@ -1,6 +1,7 @@
 import { useParams } from 'react-router-dom';
 import { useAuth } from '../context/AuthContext'
 import { useEffect } from 'react';
+import Loader from './Loader'
 
 const AutoLogin = () => {
     const params = useParams()
@@ -17,6 +18,9 @@ const AutoLogin = () => {
     useEffect(()=>{
         makeLogin()
     }, [])
+    return (
+        <Loader loading={true}/>
+    )
 }
 
 export default AutoLogin
