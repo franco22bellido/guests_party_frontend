@@ -1,7 +1,7 @@
 import { useContext, useEffect } from "react";
 import { createContext, useState } from "react";
 import { registerRequest, verifyToken } from '../api/auth'
-import { loginRequest, logOut} from "../api/auth";
+import { loginRequest } from "../api/auth";
 import { toast } from "react-toastify";
 
 
@@ -40,6 +40,7 @@ export const AuthProvider = ({ children }) => {
         try {
             setLoading(true)
             const res = await loginRequest(user);
+            window.localStorage.setItem('Authorization', res.data.token)
             setUser(res.data);
             setIsAuthenticated(true);
             notify('successful login');
@@ -50,7 +51,7 @@ export const AuthProvider = ({ children }) => {
             } else {
                 setErrors([error.response.data.message]);
             }
-        } finally{
+        } finally {
             setLoading(false)
         }
     }
@@ -83,7 +84,7 @@ export const AuthProvider = ({ children }) => {
 
     const clearSession = async () => {
         try {
-            await logOut()
+            window.localStorage.removeItem('Authorization')
             setUser(null);
             setLoading(false);
             setIsAuthenticated(false);
